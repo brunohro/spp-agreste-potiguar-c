@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "leitura.h"
+#include "leitura/leitura.h"
 
 #define MAX 100
 #define INF 10000.0
@@ -12,7 +12,7 @@ int n; // número de municipios
 char nomes[MAX][50];
 float A[MAX][MAX]; // matriz de adjacência
 float D[MAX][MAX]; // matriz de distância mínimas
-float P[MAX][MAX]; // matriz de prodecessores
+int P[MAX][MAX]; // matriz de prodecessores
 
 // protótipos das minhas funções
 void ler_arquivo_entrada(const char *nome_arquivo);
