@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "leitura.h"
 
 #define MAX 100
 #define INF 10000.0
@@ -47,7 +48,7 @@ int main()
             ler_arquivo_entrada(nome_arquivo);
             break;
         case 2:
-            floydWarshall();
+            floyd_warshall();
             printf("Algoritmo executado com sucesso!\n");
             break;
         case 3:
@@ -189,7 +190,7 @@ void imprimir_matriz_int(int M[MAX][MAX])
     {
         for (int j = 0; j < n; j++)
         {
-            printf("%d\t", M[i][j]);
+            printf("%i\t", M[i][j]);
         }
         printf("\n");
     }
