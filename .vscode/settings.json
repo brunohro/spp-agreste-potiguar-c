@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "floyd_warshall.h": "c",
+    "mostrar_caminho.h": "c",
+    "matriz_float.h": "c",
+    "salvar_arquivo.h": "c",
+    "leitura.h": "c",
+    "matriz_int.h": "c"
+  }
+}
