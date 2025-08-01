@@ -15,16 +15,17 @@ void ler_arquivo_entrada(const char *nome_arquivo)
 
     for (int i = 0; i < n; i++)
     {
-        fgets(nomes[i], 50, arq); // nomes dos municipios ( lê até  50 municipios )
+        fgets(nomes[i], 50, arq); 
     }
 
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n; j++)
         {
-            fscanf(arq, "%f;", &M_ADJACENCIA[i][j]); // lê a matriz adjacente do grafo
+            fscanf(arq, "%f;", &M_ADJACENCIA[i][j]);
         }
     }
 
     fclose(arq);
+    printf("Algoritmo executado com sucesso!\n"); // caso o arquivo tenha sido lido corretamente, executará também o algoritmo de Floyd-Warshall
 }

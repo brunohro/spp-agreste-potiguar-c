@@ -18,14 +18,19 @@ void mostrar_caminho(int origem, int destino)
     }
     caminho[tam++] = origem;
 
-    printf("Caminho:    ");
+    printf("\n======= CAMINHO ENCONTRADO =======\n");
+    printf("Caminho: \n");
     for (int i = tam - 1; i >= 0; i--)
     {
-        printf("%s", nomes[caminho[i]]);
+        printf("        %s", nomes[caminho[i]]);
         if (i > 0)
         {
-            printf(" -> ");
+            printf("\n          | \n");
+            printf("\n          | \n");
+            printf("\n          v \n");
         }
-        printf("\nCusto total: %.2f\n", M_DISTANCIA_M[origem][destino]);
     }
+
+    printf("\nDistancia total: %.2f km\n", M_DISTANCIA_M[origem][destino]);
+    printf("==================================\n");
 }

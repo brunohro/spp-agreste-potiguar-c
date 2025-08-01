@@ -42,11 +42,10 @@ int main()
         printf("|         SISTEMA DE ROTAS MUNICIPAIS          |\n");
         printf("+==============================================+\n");
         printf("| 1. Carregar dados do arquivo                 |\n");
-        printf("| 2. Executar algoritmo de Floyd-Warshall      |\n");
-        printf("| 3. Mostrar matriz de distancias              |\n");
-        printf("| 4. Mostrar matriz de predecessores           |\n");
-        printf("| 5. Mostrar caminho entre dois municipios     |\n");
-        printf("| 6. Salvar resultados em arquivo              |\n");
+        printf("| 2. Mostrar matriz de distancias              |\n");
+        printf("| 3. Mostrar matriz de predecessores           |\n");
+        printf("| 4. Mostrar caminho entre dois municipios     |\n");
+        printf("| 5. Salvar resultados em arquivo              |\n");
         printf("| 0. Sair do programa                          |\n");
         printf("+==============================================+\n");
         printf("Escolha uma opcao: ");
@@ -58,25 +57,22 @@ int main()
             printf("Nome do arquivo de entrada: ");
             scanf("%s", nome_arquivo);
             ler_arquivo_entrada(nome_arquivo);
+            floyd_warshall();
             break;
         case 2:
-            floyd_warshall();
-            printf("Algoritmo executado com sucesso!\n");
-            break;
-        case 3:
             imprimir_matriz_float(M_DISTANCIA_M);
             break;
-        case 4:
+        case 3:
             imprimir_matriz_int(M_PRODECESSORES);
             break;
-        case 5:
+        case 4:
             printf("indice do municipio de origem: ");
             scanf("%d", &origem);
             printf("indice do municipio de destino: ");
             scanf("%d", &destino);
             mostrar_caminho(origem, destino);
             break;
-        case 6:
+        case 5:
             printf("Nome do arquivo de saida: ");
             scanf("%s", nome_arquivo);
             salvar_arquivo_saida(nome_arquivo);
