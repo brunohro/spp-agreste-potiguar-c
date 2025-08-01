@@ -16,14 +16,14 @@ void salvar_arquivo_saida(const char *nome_arquivo)
     {
         for (int j = 0; j < n; j++)
         {
-            fprintf(arq, "%.2f;", D[i][j]); // distância miníma
+            fprintf(arq, "%.2f;", M_DISTANCIA_M[i][j]); // distância miníma
         }
         fprintf(arq, "\n");
     }
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n; j++)
-            fprintf(arq, "%d;", P[i][j]); // prodecessores
+            fprintf(arq, "%d;", M_PRODECESSORES[i][j]); // prodecessores
         fprintf(arq, "\n");
     }
     fclose(arq);

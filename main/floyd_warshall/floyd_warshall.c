@@ -8,18 +8,18 @@ void floyd_warshall()
     {
         for (int j = 0; j < n; j++)
         {
-            D[i][j] = A[i][j];
+            M_DISTANCIA_M[i][j] = M_ADJACENCIA[i][j];
             if (i == j)
             {
-                P[i][j] = -1;
+                M_PRODECESSORES[i][j] = 0;
             }
-            else if (A[i][j] < INF)
+            else if (M_ADJACENCIA[i][j] < INF)
             {
-                P[i][j] = i;
+                M_PRODECESSORES[i][j] = i;
             }
             else
             {
-                P[i][j] = -1;
+                M_PRODECESSORES[i][j] = -1;
             }
         }
     }
@@ -30,10 +30,10 @@ void floyd_warshall()
         {
             for (int j = 0; j < n; j++)
             {
-                if (D[i][k] + D[k][j] < D[i][j])
+                if (M_DISTANCIA_M[i][k] + M_DISTANCIA_M[k][j] < M_DISTANCIA_M[i][j])
                 {
-                    D[i][j] = D[i][k] + D[k][j];
-                    P[i][j] = P[k][j];
+                    M_DISTANCIA_M[i][j] = M_DISTANCIA_M[i][k] + M_DISTANCIA_M[k][j];
+                    M_PRODECESSORES[i][j] = M_PRODECESSORES[k][j];
                 }
             }
         }

@@ -3,10 +3,11 @@
 
 #define MAX 100
 
-extern int n; // número de municipios
-extern char nomes[MAX][50];
-extern float D[MAX][MAX]; // matriz de distância mínimas
-extern int P[MAX][MAX];   // matriz de prodecessores
+int n;
+char nomes[MAX][50];
+float M_ADJACENCIA[MAX][MAX];
+float M_DISTANCIA_M[MAX][MAX];
+int M_PRODECESSORES[MAX][MAX];
 
 void salvar_arquivo_saida(const char *nome_arquivo);
 

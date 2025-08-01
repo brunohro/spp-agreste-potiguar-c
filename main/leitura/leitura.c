@@ -22,10 +22,9 @@ void ler_arquivo_entrada(const char *nome_arquivo)
     {
         for (int j = 0; j < n; j++)
         {
-            fscanf(arq, "%f;", &A[i][j]); // lê a matriz adjacente do grafo 
+            fscanf(arq, "%f;", &M_ADJACENCIA[i][j]); // lê a matriz adjacente do grafo
         }
     }
 
-    fclose(arq); 
+    fclose(arq);
 }
-

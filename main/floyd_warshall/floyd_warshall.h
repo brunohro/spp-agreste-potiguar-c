@@ -4,13 +4,12 @@
 #define MAX 100
 #define INF 10000.0
 
-// variáveis globais acessadas em outros arquivos
-extern int n;
-extern char nomes[MAX][50];
-extern float A[MAX][MAX];
-extern float D[MAX][MAX];
-extern int P[MAX][MAX];
+int n;
+char nomes[MAX][50];
+float M_ADJACENCIA[MAX][MAX];
+float M_DISTANCIA_M[MAX][MAX];
+int M_PRODECESSORES[MAX][MAX];
 
-void floyd_warshall(); // chamando minha função
+void floyd_warshall();
 
 #endif

@@ -3,7 +3,7 @@
 
 void mostrar_caminho(int origem, int destino)
 {
-    if (D[origem][destino] >= INF)
+    if (M_DISTANCIA_M[origem][destino] >= INF)
     {
         printf("Nao ha caminho disponivel entre os municipios.\n");
         return;
@@ -14,7 +14,7 @@ void mostrar_caminho(int origem, int destino)
     while (atual != origem)
     {
         caminho[tam++] = atual;
-        atual = P[origem][atual];
+        atual = M_PRODECESSORES[origem][atual];
     }
     caminho[tam++] = origem;
 
@@ -26,6 +26,6 @@ void mostrar_caminho(int origem, int destino)
         {
             printf(" -> ");
         }
-        printf("\nCusto total: %.2f\n", D[origem][destino]);
+        printf("\nCusto total: %.2f\n", M_DISTANCIA_M[origem][destino]);
     }
 }
