@@ -6,5 +6,6 @@
     "salvar_arquivo.h": "c",
     "leitura.h": "c",
     "matriz_int.h": "c"
-  }
+  },
+  "files.autoGuessEncoding": false
 }
