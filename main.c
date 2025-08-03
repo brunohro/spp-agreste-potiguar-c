@@ -3,49 +3,48 @@
 #include <string.h>
 #include <locale.h>
 #include <conio.h>
+#include <ctype.h>
 
-#define MAX 100
-#define MAX_NOMES_CIDADES 50
+#define MAX_TOTAL_MUNICIPIOS 100
+#define MAX_CARACTERES_NOMES_CIDADES 50
 #define INF 10000.0
 #define TRUE 1
-#define PASTADADOS "data"
-#define ARQUIVOROTAS "rotas.txt"
+#define LOCAL_DADOS "data/rotas.txt"
 
 // definir as variáveis globais temporariamente
-
-struct Cidades
-{
-    int indice;
-    char nome_cidade[MAX_NOMES_CIDADES];
-};
 
 // ponteiros globais
 int *ptr_total_cidades_cadastradas;
 
 // LISTA DE MATRIZES
 
+// VETORES
+
+char cidades[MAX_TOTAL_MUNICIPIOS][MAX_CARACTERES_NOMES_CIDADES]; // Como eu vou utilizar esse vetor em muitos locais, prefere-se criar uma variavel global para facilitar a construção do site;
+
+// FUNÇÕES
 void menu_principal();
 void menu_secundario();
 void Cadastrar_cidades();
-void Gerar_relatorio_todas_cidades();
-int Salvar_cidade(char dado[MAX_NOMES_CIDADES]);
-int Carregar_cidades(struct Cidades *cidade);
+int Salvar_cidade(char *dado);
+// O USO DO VETOR DE CARACTERES (STRING) COM ESTA SINTAXE SIGNIFICA IMPLICITAMENTE QUE ESTOU PASSANDO UM VALOR POR REFERENCIA
+//  podendo ser substituido por
+// int Carregar_cidades(char *(cidade)[MAX_CARACTERES_NOMES_CIDADES]);
+int Carregar_cidades();
 void Relatorio_cidades();
+void converter_Maisculas(char *texto);
+
+void limpar_Terminal();
 
 int main()
 
 {
-
     setlocale(LC_ALL, "portuguese");
     int opcao, origem, destino, totalMunicipiosCadastrados = 0, menu_secundario;
 
-    struct Cidades cidades;
-    struct Cidades *ptr_cidades;
-
-    ptr_cidades = &cidades;
     ptr_total_cidades_cadastradas = &totalMunicipiosCadastrados;
 
-    totalMunicipiosCadastrados = Carregar_cidades(ptr_cidades);
+    totalMunicipiosCadastrados = Carregar_cidades(cidades);
 
     if (totalMunicipiosCadastrados != 0)
     {
@@ -62,19 +61,19 @@ void menu_principal()
     int opcao = 0;
     while (TRUE)
     {
-        system("cls");
-        printf("\n\n            <<<<<<<<<<>>>>>>>>>>");
-        printf("\n  /// OLá, SEJA BEM-VINDO(A) AO SISTEMA ///");
-        printf("\n      Total de Cidades Cadastradas: %i", *ptr_total_cidades_cadastradas);
-        printf("\n =============================================================");
+        limpar_Terminal();
+        printf("\n\n                    <<<<<<<<<<>>>>>>>>>>");
+        printf("\n      /// OLÁ, SEJA BEM-VINDO(A) AO SISTEMA ROTAS ///");
+        printf("\n============================================================");
+        printf("\n             Total de cidades cadastradas: %.3i", *ptr_total_cidades_cadastradas);
 
-        printf("\n\n-----------------------------------------------\n");
-        printf("|              *** Menu PRINCIPAL ***             |");
-        printf("\n-----------------------------------------------\n");
+        printf("\n\n------------------------------------------------------------\n");
+        printf("|                  *** Menu PRINCIPAL ***                  |");
+        printf("\n------------------------------------------------------------\n");
         printf("1. Cidades\n");
         printf("2. Logistica\n");
         printf("0. Sair\n");
-        printf("\n-----------------------------------------------\n");
+        printf("\n------------------------------------------------------------\n");
         printf("Escolha uma opção: ");
         scanf("%i", &opcao);
 
@@ -102,11 +101,11 @@ void menu_secundario()
     int opcao = 0;
     while (TRUE)
     {
-        system("cls");
-        printf("\n\n-----------------------------------------------\n");
-        printf("\n  *** Menu CIDADE(s) *** \n");
-        printf("Você possui %i cadastradas", *ptr_total_cidades_cadastradas);
-        printf("\n-----------------------------------------------\n");
+        limpar_Terminal();
+        printf("------------------------------------------------------------\n");
+        printf("|                  *** Menu CIDADE(s) ***                  |");
+        printf("\n------------------------------------------------------------\n");
+        printf("Você possui %.3i Cadastros\n\n", *ptr_total_cidades_cadastradas);
         printf("1. Cadastrar Cidades\n");
         printf("2. Relatário das cidades\n");
         printf("3. Pesquisar uma cidade\n");
@@ -125,7 +124,7 @@ void menu_secundario()
         }
         else if (opcao == 2)
         {
-            Relatorio_cidades();
+            Relatorio_cidades(cidades);
         }
         else
         {
@@ -142,45 +141,52 @@ void Cadastrar_cidades()
     // verificar as vizinhas - PENDENTE
     // precisa cadastrar e depois verificar se existe outros dados para ir salvando no arquivo de texto - PENDENTES
 
-    char cidades[100];
-    int opcao = 1, ch;
+    // char cidades[100];
+    int opcao = 0, i = 0;
+    char temp_nome_cidades[MAX_CARACTERES_NOMES_CIDADES];
 
     while (TRUE)
     {
         fflush(stdin);
+        if (i == 0)
+            limpar_Terminal();
+        printf("------------------------------------------------------------\n");
+        printf("|                 *** CADASTRAR CIDADES ***                 |");
+        printf("\n------------------------------------------------------------");
+        printf("\nMENU ANTERIOR >> pressione a tecla 0 + [enter] <<\n");
+        printf("\n\n------------------------------------------------------------");
+        printf("\nCidades Cadastradas %i", *ptr_total_cidades_cadastradas);
 
-        printf("\n-----------------------------------------------\n");
-        printf("\nPara Sair pressione no teclado a tecla ESC \n");
-        printf("\nCidade(s) cadastrada(s) : %i", *ptr_total_cidades_cadastradas);
-        printf("\nDIGITE O NOME DA CIDADE: ");
-        ch = getch();
-        if (ch == 27)
-        {
-            break;
-        }
-        scanf("%[^\n]", &cidades);
+        printf("\nDIGITE O NOME DA CIDADE [sem acentuação]: ");
+        scanf("%[^\n]", &temp_nome_cidades);
 
-        if (Salvar_cidade(cidades) == 1)
+        if (strcmp(temp_nome_cidades, "0") != 0)
         {
-            printf("\n\nCIDADE CADASTRADA COM SUCESSO! \n\n");
-            *ptr_total_cidades_cadastradas += 1;
+           converter_Maisculas(temp_nome_cidades);
+
+            if (Salvar_cidade(temp_nome_cidades) == 1)
+            {
+                i = 1;
+                limpar_Terminal();
+
+                printf("\nCIDADE CADASTRADA COM SUCESSO!");
+                printf("\n%s\n\n", temp_nome_cidades);
+                // ocorrendo o sucesso inseri as informações no vetor
+                strcpy(cidades[*ptr_total_cidades_cadastradas], temp_nome_cidades);
+                *ptr_total_cidades_cadastradas += 1;
+            }
+            else
+            {
+                printf("\n\nErro ao salvar a cidade! \n\n");
+            }
         }
         else
-        {
-            printf("\n\nErro ao salvar a cidade! \n\n");
-        }
-        
-        if (opcao == 0)
         {
             break;
         }
     }
 }
 
-void Gerar_relatorio_todas_cidades()
-{
-    // se cidades for igua a 0, apresentar a mensagem de nenhuma cidade cadastrada -> se n?o exibir todas as cidades cadastradas;
-}
 
 int Salvar_cidade(char dado[100])
 {
@@ -188,15 +194,13 @@ int Salvar_cidade(char dado[100])
     int result = 0;
     char arquivo[100] = "./";
 
-    strcat(arquivo, PASTADADOS);
-    strcat(arquivo, "/");
-    strcat(arquivo, ARQUIVOROTAS);
+    strcat(arquivo, LOCAL_DADOS);
 
     ptr_arquivo = fopen(arquivo, "a");
 
     if (ptr_arquivo != NULL)
     {
-        printf("salvando...");
+        printf("\nsalvando...");
         fprintf(ptr_arquivo, "%s\n", dado);
         result = 1;
     }
@@ -206,16 +210,14 @@ int Salvar_cidade(char dado[100])
     return result;
 }
 
-int Carregar_cidades(struct Cidades *cidade)
+int Carregar_cidades()
 {
     // Atualizar para a constante depois;
     FILE *ptr_arquivo = NULL;
     int i = 0;
-    char arquivo[100] = "./", texto_txt[100];
+    char arquivo[MAX_CARACTERES_NOMES_CIDADES] = "./", texto_txt[MAX_CARACTERES_NOMES_CIDADES];
 
-    strcat(arquivo, PASTADADOS);
-    strcat(arquivo, "/");
-    strcat(arquivo, ARQUIVOROTAS);
+    strcat(arquivo, LOCAL_DADOS);
 
     ptr_arquivo = fopen(arquivo, "r");
 
@@ -223,11 +225,9 @@ int Carregar_cidades(struct Cidades *cidade)
 
     if (ptr_arquivo != NULL)
     {
-        while (fgets(texto_txt, MAX_NOMES_CIDADES, ptr_arquivo) != NULL)
+        while (fgets(texto_txt, MAX_CARACTERES_NOMES_CIDADES, ptr_arquivo) != NULL)
         {
-            (cidade)->indice = i;
-            strcpy((cidade)->nome_cidade, texto_txt);
-
+            strcpy(cidades[i], texto_txt);
             i++;
         }
     }
@@ -241,15 +241,40 @@ int Carregar_cidades(struct Cidades *cidade)
 
 void Relatorio_cidades()
 {
-    if(*ptr_total_cidades_cadastradas >= 1){
-        //logica para listar todas as cidades....
-    }else{
-        printf("\n\nNão existe nenhuma cidade Cadastrada!\n");
-        
+    limpar_Terminal();
+    printf("------------------------------------------------------------\n");
+    printf("|               >>> RELATÓRIO DAS CIDADES <<<              |");
+    printf("\n------------------------------------------------------------\n");
+    if (*ptr_total_cidades_cadastradas >= 1)
+    {
+        // logica para listar todas as cidades....
+        printf("\nTotal de cidades cadastradas: %i", *ptr_total_cidades_cadastradas);
+        printf("\n----------------------------------------------\n\n");
+        for (int i = 0; i < *ptr_total_cidades_cadastradas; i++)
+        {
+            printf("%.2i: %s", i + 1, cidades[i]);
+        }
     }
-    
+    else
+    {
+        printf("\n\nNão existe nenhuma cidade Cadastrada!\n");
+    }
+    printf("\n------------------------------------------------------------\n\n");
     system("pause");
-
 }
 
+void limpar_Terminal()
+{
+    system("cls");
+}
 
+void converter_Maisculas(char *texto){
+    int i =0;
+
+    while (texto[i] != '\0')
+    {
+        texto[i] = toupper((unsigned char) texto[i]);
+        i++;
+    }
+    
+}
