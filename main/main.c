@@ -1,23 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "leitura/leitura.h" // chamando as fun��es
+#include "leitura/leitura.h"
 #include "salvar/salvar_arquivo.h"
 #include "floyd_warshall/floyd_warshall.h"
 #include "matriz/matriz_int.h"
 #include "matriz/matriz_float.h"
-// #include <locale.h>
 
 #define MAX 100
 #define INF 10000.0
 
 // definir as vari�veis globais temporariamente
 
-int n; // n�mero de municipios
+int n;
 char nomes[MAX][50];
-float M_ADJACENCIA[MAX][MAX];  // matriz de adjac�ncia
-float M_DISTANCIA_M[MAX][MAX]; // matriz de dist�ncia m�nimas
-int M_PRODECESSORES[MAX][MAX]; // matriz de prodecessores
+float M_ADJACENCIA[MAX][MAX];
+float M_DISTANCIA_M[MAX][MAX];
+int M_PRODECESSORES[MAX][MAX];
 
 void ler_arquivo_entrada(const char *nome_arquivo);
 void salvar_arquivo_saida(const char *nome_arquivo);
@@ -30,7 +29,6 @@ void mostrar_caminho(int origem, int destino);
 
 int main()
 {
-    // setlocale(LC_ALL, "portuguese");
 
     int opcao, origem, destino;
     char nome_arquivo[100];
