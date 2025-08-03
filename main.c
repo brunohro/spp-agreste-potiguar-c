@@ -62,7 +62,7 @@ void menu_principal()
     while (TRUE)
     {
         limpar_Terminal();
-        printf("\n\n                    <<<<<<<<<<>>>>>>>>>>");
+        printf("                    <<<<<<<<<<>>>>>>>>>>");
         printf("\n      /// OLÁ, SEJA BEM-VINDO(A) AO SISTEMA ROTAS ///");
         printf("\n============================================================");
         printf("\n             Total de cidades cadastradas: %.3i", *ptr_total_cidades_cadastradas);
