@@ -8,7 +8,7 @@
 #include "matriz/matriz_float.h"
 
 #define MAX 100
-#define INF 10000.0
+#define INF 100.0
 
 // definir as vari�veis globais temporariamente
 

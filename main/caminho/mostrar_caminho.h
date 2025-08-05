@@ -2,7 +2,7 @@
 #define MOSTRAR_CAMINHO_H
 
 #define MAX 100
-#define INF 10000.0
+#define INF 100.0
 
 int n;
 char nomes[MAX][50];

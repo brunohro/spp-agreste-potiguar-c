@@ -9,23 +9,14 @@ void floyd_warshall()
         for (int j = 0; j < n; j++)
         {
             M_DISTANCIA_M[i][j] = M_ADJACENCIA[i][j];
-            if(M_DISTANCIA_M[i][j] >= INF){
+            if (M_DISTANCIA_M[i][j] == INF)
+            {
                 M_PRODECESSORES[i][j] = -1;
-            } else{
+            }
+            else
+            {
                 M_PRODECESSORES[i][j] = i;
             }
-            // if (i == j)
-            // {
-            //     M_PRODECESSORES[i][j] = 0;
-            // }
-            // else if (M_ADJACENCIA[i][j] < INF)
-            // {
-            //     M_PRODECESSORES[i][j] = i;
-            // }
-            // else
-            // {
-            //     M_PRODECESSORES[i][j] = -1;
-            // }
         }
     }
 
