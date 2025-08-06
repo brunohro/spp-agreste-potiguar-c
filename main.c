@@ -4,12 +4,10 @@
 #include <locale.h>
 #include <ctype.h>
 
-#define MAX_TOTAL_CIDADES 15
+#define MAX_TOTAL_CIDADES 50
 #define MAX_CARACTERES_NOMES_CIDADES 50
 #define INF 10000.0
 #define TRUE 1
-#define DADOS_CIDADES "data/cidades.txt"
-#define DADOS_cidadesDistancias "data/cidadesDistancias.txt"
 
 // FUNCOES
 int menuCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES]);
@@ -24,6 +22,7 @@ int carregarCidades();
 void relatorioCidades();
 int salvarCidadess_distancias(int linha, int coluna, float distancia);
 int cidadesDistancias();
+void listarArquivos(char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES]);
 
 void limpar_Terminal();
 
@@ -47,7 +46,6 @@ int main()
         printf("\n------------------------------------------------------------\n");
         printf("1. Cidades [cadastro avulso]\n");
         printf("2. Carregar arquivos salvos: \n");
-        printf("3. Logistica\n");
         printf("0. Sair\n");
         printf("\n------------------------------------------------------------\n");
         printf("Escolha uma opcao: ");
@@ -61,6 +59,9 @@ int main()
         case 1:
             menuCidades(totalCidadesCadastradas, vetorCidades, mtzAdjacenteCidades);
             break;
+        case 2:
+            listarArquivos(vetorCidades, mtzAdjacenteCidades);
+            break;
         default:
             continue;
             break;
@@ -73,21 +74,23 @@ int main()
 int menuCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES])
 {
 
-    int opcao = 0;
+    int opcao = 0, i=0;
+
     while (TRUE)
     {
-        limpar_Terminal();
+        if(i==0){
+            limpar_Terminal();
+        }
         printf("------------------------------------------------------------\n");
         printf("|                  *** Menu CIDADE(s) ***                  |");
         printf("\n------------------------------------------------------------\n");
-        printf("Voce possui %.3i Cadastros\n\n", total_cidades_cadastradas);
         printf("1. Cadastrar Cidades\n");
         printf("2. Relatario das cidades\n");
-        // printf("3. Pesquisar uma cidade\n");
         printf("0. Menu Anterior\n");
         printf("\n-----------------------------------------------\n");
         printf("Escolha uma opcao: ");
         scanf("%i", &opcao);
+        
 
         if (opcao == 0)
         {
@@ -97,6 +100,7 @@ int menuCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTE
         {
 
             cadastrarCidades(0, vetor_cidades, mtz_adjacente_cidades);
+            
         }
         else if (opcao == 2)
         {
@@ -106,6 +110,7 @@ int menuCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTE
         {
             continue;
         }
+        i=1;
     }
 
     return 0;
@@ -139,8 +144,8 @@ void cadastrarCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_C
         printf("------------------------------------------------------------\n");
         printf("|                 *** CADASTRAR CIDADES ***                 |");
         printf("\n------------------------------------------------------------");
-       
-        (total_cidades_cadastradas==0) ? printf("\nVOLTAR AO MENU ANTERIOR >> pressione a tecla 0 + [enter] <<") : printf("\nCADASTRAR DISTANCIAS >> pressione a tecla 0 + [enter] <<"); 
+
+        (total_cidades_cadastradas == 0) ? printf("\nVOLTAR AO MENU ANTERIOR << pressione a tecla 0 + [enter] <<") : printf("\n >> *** CADASTRAR DISTANCIAS *** << pressione a tecla 0 + [enter] <<");
         printf("\n\n------------------------------------------------------------");
         printf("\nCidades Cadastradas %i", total_cidades_cadastradas);
 
@@ -241,22 +246,24 @@ int cidadesDistancias(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_C
         printf("\n>>1: SIM. <<  >>");
         printf("0: NAO. <<\n");
         printf("\n------------------------------------------------------------\n");
-        printf("Escolha uma das opcoes");
+        printf("Escolha uma das opcoes: ");
         scanf("%i", &salvar);
 
-        if (salvar == 1){
-           scanf("%c", &nome_arquivo[0]);
+        if (salvar == 1)
+        {
+            scanf("%c", &nome_arquivo[0]);
             printf("Informe o nome do arquivo: ");
             scanf("%[^\n]", &nome_arquivo[0]);
-            if (salvarCidades(nome_arquivo,total_cidades_cadastradas, vetor_cidades, mtz_adjacente_cidades) == 1) {
-                printf("ARQUIVO [ %s ] SALVO COM SUCESSO!!!\n\n", nome_arquivo);                
+            if (salvarCidades(nome_arquivo, total_cidades_cadastradas, vetor_cidades, mtz_adjacente_cidades) == 1)
+            {
+                printf("ARQUIVO [ %s ] SALVO COM SUCESSO!!!\n\n", nome_arquivo);
                 break;
             }
-            else {
-               printf("Error ao salvar o arquivo");
-               continue; 
+            else
+            {
+                printf("Error ao salvar o arquivo");
+                continue;
             }
-
         }
         else if (salvar == 0)
             break;
@@ -266,6 +273,34 @@ int cidadesDistancias(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_C
 
     return result;
 }
+
+
+int carregarArquivosCidades(char *nome_arquivo, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES])
+{
+    // existe forma diferentes de efetuar a listar arquivos
+    // pensando nisso a melhor maneira é salvar tudo em um config.txt;
+    FILE *ptr_arquivo = NULL;
+    int i = 0;
+
+    char arquivo[100] = "./data/";
+
+    strcat(arquivo, nome_arquivo);
+    strcat(arquivo, ".txt");
+
+    ptr_arquivo = fopen(arquivo, "r");
+
+    if (ptr_arquivo != NULL)
+    {
+       
+    }
+
+
+    fclose(ptr_arquivo);
+
+    return i;
+}
+
+
 int salvarCidades(char *nome_arquivo, int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES])
 {
     FILE *ptr_arquivo = NULL;
@@ -273,13 +308,14 @@ int salvarCidades(char *nome_arquivo, int total_cidades_cadastradas, char (*veto
     char arquivo[100] = "./data/";
 
     strcat(arquivo, nome_arquivo);
-    strcat(arquivo,".txt");
+    strcat(arquivo, ".txt");
 
     ptr_arquivo = fopen(arquivo, "a");
 
     if (ptr_arquivo != NULL)
     {
-        printf("\nsalvando...\n");
+        limpar_Terminal();
+        printf("\nsalvando...\n\n");
         fprintf(ptr_arquivo, "%i\n", total_cidades_cadastradas);
         for (int i = 0; i < total_cidades_cadastradas; i++)
         {
@@ -292,14 +328,39 @@ int salvarCidades(char *nome_arquivo, int total_cidades_cadastradas, char (*veto
                 (c != total_cidades_cadastradas - 1) ? fprintf(ptr_arquivo, "%.2f;", mtz_adjacente_cidades[l][c]) : fprintf(ptr_arquivo, "%.2f\n", mtz_adjacente_cidades[l][c]);
             }
         }
-
-        result = 1;
+                result = 1;
     }
 
     fclose(ptr_arquivo);
 
     return result;
 }
+
+void listarArquivos(char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES])
+{
+
+    char aux_nome;
+    int i = 0, total_cidades_cadastrada =0;
+
+    while (TRUE)
+    {
+
+        scanf("%c", &aux_nome);
+        if (i == 0)
+        {
+            limpar_Terminal();
+        }
+
+        printf("------------------------------------------------------------\n");
+        printf("|           *** ESCOLHA UM ARQUIVO DE CIDADES ***           |");
+        printf("\n------------------------------------------------------------");
+        //funcao cidades
+    }
+}
+
+
+
+
 /*
 
 
