@@ -5,6 +5,7 @@
     "matriz_float.h": "c",
     "salvar_arquivo.h": "c",
     "leitura.h": "c",
-    "matriz_int.h": "c"
+    "matriz_int.h": "c",
+    "limits.h": "c"
   }
 }

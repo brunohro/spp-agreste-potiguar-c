@@ -16,7 +16,7 @@ void imprimir_matriz_int(int M[MAX][MAX])
         {
             if (M[i][j] == -1)
             {
-                printf("%i\t", M[i][j]);
+                printf("INF\t", M[i][j]);
             }
             else
             {
