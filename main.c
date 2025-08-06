@@ -139,8 +139,8 @@ void cadastrarCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_C
         printf("------------------------------------------------------------\n");
         printf("|                 *** CADASTRAR CIDADES ***                 |");
         printf("\n------------------------------------------------------------");
-        printf("\nENCERRAR O CADASTRO >> pressione a tecla 0 + [enter] <<");
-        printf("\n>>Ao encerrar o cadastro informe o preenchimento das distancias em km entre as cidades <<\n");
+       
+        (total_cidades_cadastradas==0) ? printf("\nVOLTAR AO MENU ANTERIOR >> pressione a tecla 0 + [enter] <<") : printf("\nCADASTRAR DISTANCIAS >> pressione a tecla 0 + [enter] <<"); 
         printf("\n\n------------------------------------------------------------");
         printf("\nCidades Cadastradas %i", total_cidades_cadastradas);
 
@@ -212,7 +212,7 @@ int cidadesDistancias(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_C
             else
             {
 
-                printf("\nInforme a distancia em km entre as cidades [ %s ]-[ %s ]\n[digite -1 se elas nao tiverem ligacao direta] ", vetor_cidades[l], vetor_cidades[c]);
+                printf("\nInforme a distancia em km entre as cidades [ %s ] - [ %s ]\n[digite -1 se elas nao tiverem ligacao direta] ", vetor_cidades[l], vetor_cidades[c]);
                 scanf("%f", &opcao);
 
                 if (opcao > 0)
@@ -270,7 +270,7 @@ int salvarCidades(char *nome_arquivo, int total_cidades_cadastradas, char (*veto
 {
     FILE *ptr_arquivo = NULL;
     int result = 0;
-    char arquivo[100] = "./data";
+    char arquivo[100] = "./data/";
 
     strcat(arquivo, nome_arquivo);
     strcat(arquivo,".txt");
@@ -289,7 +289,7 @@ int salvarCidades(char *nome_arquivo, int total_cidades_cadastradas, char (*veto
         {
             for (int c = 0; c < total_cidades_cadastradas; c++)
             {
-                (c != total_cidades_cadastradas - 1) ? fprintf(ptr_arquivo, "%f", mtz_adjacente_cidades[l][c]) : fprintf(ptr_arquivo, "%f\n", mtz_adjacente_cidades[l][c]);
+                (c != total_cidades_cadastradas - 1) ? fprintf(ptr_arquivo, "%.2f;", mtz_adjacente_cidades[l][c]) : fprintf(ptr_arquivo, "%.2f\n", mtz_adjacente_cidades[l][c]);
             }
         }
 
