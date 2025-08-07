@@ -5,7 +5,9 @@
     "matriz_float.h": "c",
     "salvar_arquivo.h": "c",
     "leitura.h": "c",
-    "matriz_int.h": "c"
+    "matriz_int.h": "c",
+    "ctype.h": "c",
+    "stdio.h": "c"
   },
   "files.autoGuessEncoding": false
 }
