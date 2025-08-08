@@ -6,8 +6,13 @@
     "salvar_arquivo.h": "c",
     "leitura.h": "c",
     "matriz_int.h": "c",
+<<<<<<< HEAD
     "ctype.h": "c",
     "stdio.h": "c"
   },
   "files.autoGuessEncoding": false
+=======
+    "limits.h": "c"
+  }
+>>>>>>> c9e8ea2478789e0ca8ff77c9230ea771df64e74c
 }

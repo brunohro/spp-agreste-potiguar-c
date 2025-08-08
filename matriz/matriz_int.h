@@ -1,5 +1,5 @@
-#ifndef SALVAR_H
-#define SALVAR_H
+#ifndef MATRIZ_INT_H
+#define MATRIZ_INT_H
 
 #define MAX 100
 
@@ -9,6 +9,6 @@ float M_ADJACENCIA[MAX][MAX];
 float M_DISTANCIA_M[MAX][MAX];
 int M_PRODECESSORES[MAX][MAX];
 
-void salvar_arquivo_saida(const char *nome_arquivo);
+void imprimir_matriz_int(int M[MAX][MAX]);
 
 #endif

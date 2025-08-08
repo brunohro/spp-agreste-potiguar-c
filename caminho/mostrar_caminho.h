@@ -1,7 +1,8 @@
-#ifndef SALVAR_H
-#define SALVAR_H
+#ifndef MOSTRAR_CAMINHO_H
+#define MOSTRAR_CAMINHO_H
 
 #define MAX 100
+#define INF 100.0
 
 int n;
 char nomes[MAX][50];
@@ -9,6 +10,5 @@ float M_ADJACENCIA[MAX][MAX];
 float M_DISTANCIA_M[MAX][MAX];
 int M_PRODECESSORES[MAX][MAX];
 
-void salvar_arquivo_saida(const char *nome_arquivo);
-
+void mostrar_caminho(int origem, int destino);
 #endif

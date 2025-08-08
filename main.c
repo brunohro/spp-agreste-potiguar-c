@@ -4,77 +4,83 @@
 #include <locale.h>
 #include <ctype.h>
 #include <dirent.h>
+#include "leitura/leitura.h"
+#include "salvar/salvar_arquivo.h"
+#include "floyd_warshall/floyd_warshall.h"
+#include "matriz/matriz_int.h"
+#include "matriz/matriz_float.h"
+
+#define MAX 100
+#define INF 100.0
 
 #define MAX_TOTAL_CIDADES 50
 #define MAX_CARACTERES_NOMES_CIDADES 50
-#define INF 10000.0
 #define TRUE 1
 #define CONFIG "./dados/"
+
+
+
+
+void salvar_arquivo_saida(const char *nome_arquivo);
+
+void floyd_warshall();
+
+void imprimir_matriz_int(int M[MAX][MAX]);
+void imprimir_matriz_float(float M[MAX][MAX]);
+void mostrar_caminho(int origem, int destino);
 
 int cadastrarCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES]);
 int salvarCidades(char *nome_arquivo, int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES]);
 int carregarCidades();
+
 void relatorioCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES]);
 int salvarCidadess_distancias(int linha, int coluna, float distancia);
-int cidadesDistancias(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES]);
+int cadastrarCidadesDistancias(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES]);
+
 int listarArquivos(char (*vetor_arquivos_salvos)[MAX_CARACTERES_NOMES_CIDADES * 4]);
+
 void limpar_Terminal();
 
 int main()
-
 {
+
     float mtzAdjacenteCidades[MAX_TOTAL_CIDADES][MAX_TOTAL_CIDADES];
     char vetorCidades[MAX_TOTAL_CIDADES][MAX_CARACTERES_NOMES_CIDADES];
     char vetorArquivosSalvos[MAX_TOTAL_CIDADES * 2][MAX_CARACTERES_NOMES_CIDADES * 4];
 
     int opcao, indiceVetorArquivosSalvos, origem, destino, totalCidadesCadastradas = 0;
+    char nome_arquivo[100];
+    limpar_Terminal();
 
     do
     {
-        limpar_Terminal();
-        printf("                    <<<<<<<<<<>>>>>>>>>>");
-        printf("\n  /// OLA, SEJA BEM-VINDO(A) AO ROTAS AGRESTE-POTIGUAR ///");
-        printf("\n============================================================");
-
-        printf("\n\n------------------------------------------------------------\n");
-        printf("|                  *** Menu PRINCIPAL ***                  |");
-        printf("\n------------------------------------------------------------\n");
-        printf("1. Cidades [cadastro avulso]\n");
-        printf("2. Carregar arquivos salvos: \n");
-        printf("3. Relatario das cidades\n");
-        printf("4. Mostrar matriz de distancias\n");
-        printf("5. Mostrar matriz de predecessores\n");
-        printf("6. Mostrar caminho entre dois municipios\n");
-        printf("7. Salvar resultados em arquivo\n");
-        printf("0. Sair\n");
-
-        if (totalCidadesCadastradas > 0)
-        {
-            if (opcao == 1)
-                printf("\n>>   usuario ");
-            else if (opcao == 2)
-                if (indiceVetorArquivosSalvos > 0)
-                    printf("\n>>   Arquivo: %s", vetorArquivosSalvos[indiceVetorArquivosSalvos - 1]);
-            ;
-            printf("------------------------------------------------------------\n\n>>>> Cidades Cadastrada: %i \n", totalCidadesCadastradas);
-        }
-        printf("\n------------------------------------------------------------\n");
+        printf("\n");
+        printf("+==================================================+\n");
+        printf("| OLA, SEJA BEM-VINDO(A) AO ROTAS AGRESTE-POTIGUAR |\n");
+        printf("+==================================================+\n");
+        printf("| 1. Cidades [cadastro avulso]                     |\n");
+        printf("| 2. Carregar dados atraves de arquivo             |\n");
+        printf("| 3. Mostrar matriz de distancias                  |\n");
+        printf("| 4. Mostrar matriz de predecessores               |\n");
+        printf("| 5. Mostrar caminho entre dois municipios         |\n");
+        printf("| 6. Relatario das cidades                         |\n");
+        printf("| 7. Salvar resultados em arquivo                  |\n");
+        printf("| 0. Sair do programa                              |\n");
+        printf("+==================================================+\n");
         printf("Escolha uma opcao: ");
-        scanf("%i", &opcao);
+        scanf("%d", &opcao);
 
         switch (opcao)
         {
-        case 0:
-            break;
         case 1:
-            totalCidadesCadastradas = cadastrarCidades(0, vetorCidades, mtzAdjacenteCidades);
+            cadastrarCidades(0, vetorCidades, mtzAdjacenteCidades);
             break;
-
         case 2:
             limpar_Terminal();
-            printf("\n\n------------------------------------------------------------\n");
-            printf("|              *** Menu CARREGAR ARQUIVOS ***             |");
-            printf("\n------------------------------------------------------------\n");
+            printf("+==================================================+\n");
+            printf("|             *** SELECIONAR ARQUIVOS ***          |\n");
+            printf("+==================================================+\n");
+          
             totalCidadesCadastradas = listarArquivos(vetorArquivosSalvos);
 
             if (totalCidadesCadastradas > 0)
@@ -85,20 +91,23 @@ int main()
                     printf("\n......................................................................");
                 }
                 printf("\n\n0 - Menu Anterior ");
-                printf("\n\n------------------------------------------------------------");
+                printf("\n\n************************************************************");
                 printf("\nEscolha uma opcao: ");
                 scanf("%i", &indiceVetorArquivosSalvos);
 
                 if (indiceVetorArquivosSalvos >= 0 && indiceVetorArquivosSalvos < totalCidadesCadastradas)
                 {
-                      //Como o primeiro se garante que o intervalo vai ser entre os valores validos;                 
                     if (indiceVetorArquivosSalvos == 0)
                     {
-                        totalCidadesCadastradas = 0;
-                
-                    }else{
-                        //Aqui direciona para a função de ler os dados de um arquivo
-                        
+                        break;
+                    }
+                    else
+                    {
+                        //preciso que a função  preencha as matrizes por ponteiro e retorne  o total_de_cidades_cadastradas para serem utilizadas no relatorio;
+                        //O erro é que as matrizes entre as funções são distintas e não estão se comunicando....
+                        //ler_arquivo_entrada(vetorArquivosSalvos[indiceVetorArquivosSalvos - 1], vetorCidades, mtzAdjacenteCidades);
+                        floyd_warshall();
+                       
                     }
                 }
             }
@@ -108,20 +117,41 @@ int main()
                 printf("\nNenhum arquivo encontrado!!!! ");
                 printf("\n------------------------------------------------------------\n\n");
                 system("pause");
+                continue;
             }
-
+            /*printf("Nome do arquivo de entrada: ");
+            scanf("%s", nome_arquivo);
+            ler_arquivo_entrada(nome_arquivo);
+            floyd_warshall();*/
             break;
         case 3:
+            imprimir_matriz_float(M_DISTANCIA_M);
+            break;
+        case 4:
+            imprimir_matriz_int(M_PRODECESSORES);
+            break;
+        case 5:
+            printf("indice do municipio de origem: ");
+            scanf("%d", &origem);
+            printf("indice do municipio de destino: ");
+            scanf("%d", &destino);
+            mostrar_caminho(origem, destino);
+            break;
+        case 6:
             relatorioCidades(totalCidadesCadastradas, vetorCidades, mtzAdjacenteCidades);
             break;
-        default:
-
+        case 7:
+            printf("Nome do arquivo de saida: ");
+            scanf("%s", nome_arquivo);
+            salvar_arquivo_saida(nome_arquivo);
             break;
+        case 0:
+            printf("Encerrando programa...\n");
+            break;
+        default:
+            printf("Opcao invalida!\n");
         }
-
     } while (opcao != 0);
-
-    printf("\nPrograma finalizado com sucesso, VOLTE SEMPRE!!!\n\n");
 
     return 0;
 }
@@ -145,16 +175,22 @@ int cadastrarCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CA
             limpar_Terminal();
         }
 
-        printf("------------------------------------------------------------\n");
-        printf("|                 *** CADASTRAR CIDADES ***                 |");
-        printf("\n------------------------------------------------------------");
+        printf("+==================================================+\n");
+        printf("|             *** CADASTRAR CIDADES ***            |\n");
+        printf("+==================================================+\n");
 
-        (total_cidades_cadastradas == 0) ? printf("\nVOLTAR AO MENU ANTERIOR << pressione a tecla 0 + [enter] <<") : printf("\n >> *** CADASTRAR DISTANCIAS *** << pressione a tecla 0 + [enter] <<");
-        printf("\n\n------------------------------------------------------------");
-        printf("\nCidades Cadastradas %i", total_cidades_cadastradas);
+        if (total_cidades_cadastradas == 0)
+            printf("| VOLTAR AO MENU ANTERIOR: pressione [0] + [ENTER] |\n");
+        else
+            printf("| CADASTRAR DISTANCIAS: pressione [0] + [ENTER]    |\n");
 
-        printf("\nDIGITE O NOME DA CIDADE [sem acentuacao]: ");
+        printf("+==================================================+\n");
+        printf("| Cidades cadastradas: %i |\n", total_cidades_cadastradas);
+        printf("+--------------------------------------------------+\n");
+        printf("| DIGITE O NOME DA CIDADE (sem acentuacao):        |\n");
         scanf("%[^\n]", &temp_nome_cidades);
+        printf("+--------------------------------------------------+\n");
+        printf(">> ");
 
         if (strcmp(temp_nome_cidades, "0") != 0)
         {
@@ -165,23 +201,24 @@ int cadastrarCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CA
             {
 
                 limpar_Terminal();
-                printf("\nCIDADE CADASTRADA COM SUCESSO!");
-                printf("\n%s\n\n", temp_nome_cidades);
-                // ocorrendo o sucesso inseri as informa��es no vetor
+                printf("+==================================================+\n");
+                printf("|         CIDADE CADASTRADA COM SUCESSO!          |\n");
+                printf("+==================================================+\n");
+                printf("| %s |\n", temp_nome_cidades);
+                printf("+==================================================+\n\n");
                 strcpy(vetor_cidades[total_cidades_cadastradas], temp_nome_cidades);
 
-                /*Criar a fun��o responsavel por inserir a distancia entre
-                os municiapios e salvar em uma matriz de distancias e salvar em txt;
-                */
-
                 total_cidades_cadastradas++;
-                // cidadesDistancias();
             }
             else
             {
                 limpar_Terminal();
-                printf("************************************************************");
-                printf("\nERROR AO CADASTRAR [ %s ],\nQuantidade maxima de [ %.3i ] cadastro(s) atingida.\n\n", temp_nome_cidades, total_cidades_cadastradas);
+                printf("+==================================================+\n");
+                printf("|        ERRO: LIMITE DE CIDADES ATINGIDO!         |\n");
+                printf("+==================================================+\n");
+                printf("| Nao foi possivel cadastrar: %s |\n", temp_nome_cidades);
+                printf("| Maximo permitido: %.3i cidades                   |\n", MAX_TOTAL_CIDADES);
+                printf("+==================================================+\n\n");
                 continue;
             }
         }
@@ -191,13 +228,13 @@ int cadastrarCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CA
             limpar_Terminal();
             if (total_cidades_cadastradas > 0)
             {
-                printf("------------------------------------------------------------\n");
-                printf("|                 *** CADASTRAR DISTANCIAS ***                 |");
-                printf("\n------------------------------------------------------------");
-                printf("\npara FINALIZAR o cadastro, preencha todas as informacoes abaixo: <<\n");
-                printf("\n------------------------------------------------------------\n");
-                if (cidadesDistancias(total_cidades_cadastradas, vetor_cidades, mtz_adjacente_cidades) == 0)
-                    printf("Erro ao salvar as distancias");
+                printf("+==================================================+\n");
+                printf("|           *** CADASTRAR DISTANCIAS ***           |\n");
+                printf("+==================================================+\n");
+                printf("| Para FINALIZAR o cadastro, informe as distancias |\n");
+                printf("| entre todas as cidades cadastradas.              |\n");
+                printf("+==================================================+\n\n");
+                cadastrarCidadesDistancias(total_cidades_cadastradas, vetor_cidades, mtz_adjacente_cidades);
             }
 
             break;
@@ -207,11 +244,11 @@ int cadastrarCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CA
     return total_cidades_cadastradas;
 }
 
-int cidadesDistancias(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES])
+int cadastrarCidadesDistancias(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES])
 {
-    int result = 1, salvarNoArquivo;
-    float ditanciaKM = 0;
-    char nome_arquivo[MAX_CARACTERES_NOMES_CIDADES];
+    int result = 1;
+    float opcao = 0;
+    // criar um for percorrendo a matriz toda;
 
     for (int l = 0; l < total_cidades_cadastradas; l++)
     {
@@ -219,25 +256,29 @@ int cidadesDistancias(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_C
         {
             if (l == c)
             {
-                mtz_adjacente_cidades[l][c] = 0.00;
+                mtz_adjacente_cidades[l][c] = 0.0;
             }
             else
             {
 
                 printf("\nInforme a distancia em km entre [ %s ] - [ %s ]\n[digite -1 se elas nao tiverem ligacao direta] ", vetor_cidades[l], vetor_cidades[c]);
-                scanf("%f", &ditanciaKM);
+                scanf("%f", &opcao);
 
-                if (ditanciaKM > 0)
+                if (opcao > 0)
                 {
-                    mtz_adjacente_cidades[l][c] = ditanciaKM;
+
+                    mtz_adjacente_cidades[l][c] = opcao;
                 }
-                else if (ditanciaKM < 0)
+                else if (opcao < 0)
                 {
                     mtz_adjacente_cidades[l][c] = INF;
                 }
             }
         }
     }
+
+    int salvar;
+    char nome_arquivo[MAX_CARACTERES_NOMES_CIDADES];
 
     while (TRUE)
     {
@@ -250,9 +291,9 @@ int cidadesDistancias(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_C
         printf("\n### 0: NAO <<<\n");
         printf("\n------------------------------------------------------------\n");
         printf("Escolha uma das opcoes: ");
-        scanf("%i", &salvarNoArquivo);
+        scanf("%i", &salvar);
 
-        if (salvarNoArquivo == 1)
+        if (salvar == 1)
         {
             scanf("%c", &nome_arquivo[0]);
             printf("Informe o nome do arquivo: ");
@@ -265,37 +306,17 @@ int cidadesDistancias(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_C
             else
             {
                 printf("Error ao salvar o arquivo");
-                result = 0;
                 continue;
             }
         }
-        else if (salvarNoArquivo == 0)
+        else if (salvar == 0)
+
             break;
         else
             continue;
     }
 
     return result;
-}
-
-int carregarArquivosCidades(char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES])
-{
-    // existe forma diferentes de efetuar a listar arquivos
-    // pensando nisso a melhor maneira é salvar tudo em um config.txt;
-    FILE *ptr_arquivo = NULL;
-    int i = 0, total_arquivos_salvos;
-
-    char arquivo[100] = CONFIG;
-
-    ptr_arquivo = fopen(arquivo, "r");
-
-    if (ptr_arquivo != NULL)
-    {
-    }
-
-    fclose(ptr_arquivo);
-
-    return total_arquivos_salvos;
 }
 
 int salvarCidades(char *nome_arquivo, int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES])
@@ -335,9 +356,6 @@ int salvarCidades(char *nome_arquivo, int total_cidades_cadastradas, char (*veto
 
 int listarArquivos(char (*vetor_arquivos_salvos)[MAX_CARACTERES_NOMES_CIDADES * 4])
 {
-
-    // precisa acrescetar a biblioteca <dirent.h>
-
     DIR *dir;
     struct dirent *entry;
     char *dir_path = CONFIG;
