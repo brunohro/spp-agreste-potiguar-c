@@ -1,13 +1,8 @@
 #ifndef LEITURA_H
 #define LEITURA_H
 
-#define MAX 100
-int n;
-char nomes[MAX][50];
-float M_ADJACENCIA[MAX][MAX];
-float M_DISTANCIA_M[MAX][MAX];
-int M_PRODECESSORES[MAX][MAX];
+#include "../rotas.h"
 
-void ler_arquivo_entrada(const char *nome_arquivo);
+int ler_arquivo_entrada(int total_cidades_cadastradas,  char nome_arquivo[MAX_LISTAR_ARQUIVOS], char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES],float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES]);
 
 #endif

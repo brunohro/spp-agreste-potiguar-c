@@ -10,17 +10,6 @@
 #include "matriz/matriz_int.h"
 #include "matriz/matriz_float.h"
 
-#define MAX 100
-#define INF 100.0
-
-#define MAX_TOTAL_CIDADES 50
-#define MAX_CARACTERES_NOMES_CIDADES 50
-#define TRUE 1
-#define CONFIG "./dados/"
-
-
-
-
 void salvar_arquivo_saida(const char *nome_arquivo);
 
 void floyd_warshall();
@@ -46,9 +35,9 @@ int main()
 
     float mtzAdjacenteCidades[MAX_TOTAL_CIDADES][MAX_TOTAL_CIDADES];
     char vetorCidades[MAX_TOTAL_CIDADES][MAX_CARACTERES_NOMES_CIDADES];
-    char vetorArquivosSalvos[MAX_TOTAL_CIDADES * 2][MAX_CARACTERES_NOMES_CIDADES * 4];
+    char vetorArquivosSalvos[MAX_LISTAR_ARQUIVOS][MAX_CARACTERES_NOMES_CIDADES * 4];
 
-    int opcao, indiceVetorArquivosSalvos, origem, destino, totalCidadesCadastradas = 0;
+    int opcao, indiceVetorArquivosSalvos, origem, destino, totalCidadesCadastradas = 0, totalArquivosCarregados=0, tempTotalCidadesCadastradas = 0;
     char nome_arquivo[100];
     limpar_Terminal();
 
@@ -73,19 +62,24 @@ int main()
         switch (opcao)
         {
         case 1:
-            cadastrarCidades(0, vetorCidades, mtzAdjacenteCidades);
+            // se não cadastrei nenhuma cidade, devo manter a listagem anterior
+            //pois um cadastro não efetuado não apaga uma lista anterior;
+            tempTotalCidadesCadastradas = cadastrarCidades(0, vetorCidades, mtzAdjacenteCidades);
+            if(tempTotalCidadesCadastradas>0){
+                totalArquivosCarregados = tempTotalCidadesCadastradas;
+            }
             break;
         case 2:
             limpar_Terminal();
             printf("+==================================================+\n");
             printf("|             *** SELECIONAR ARQUIVOS ***          |\n");
             printf("+==================================================+\n");
-          
-            totalCidadesCadastradas = listarArquivos(vetorArquivosSalvos);
 
-            if (totalCidadesCadastradas > 0)
+            totalArquivosCarregados = listarArquivos(vetorArquivosSalvos);
+
+            if (totalArquivosCarregados > 0)
             {
-                for (int i = 0; i < totalCidadesCadastradas; i++)
+                for (int i = 0; i < totalArquivosCarregados; i++)
                 {
                     printf("\n%i - %s", i + 1, vetorArquivosSalvos[i]);
                     printf("\n......................................................................");
@@ -95,19 +89,22 @@ int main()
                 printf("\nEscolha uma opcao: ");
                 scanf("%i", &indiceVetorArquivosSalvos);
 
-                if (indiceVetorArquivosSalvos >= 0 && indiceVetorArquivosSalvos < totalCidadesCadastradas)
+                
+                if (indiceVetorArquivosSalvos >= 0 && indiceVetorArquivosSalvos < totalArquivosCarregados + 1)
                 {
+
                     if (indiceVetorArquivosSalvos == 0)
                     {
-                        break;
+                        printf("Nenhum Arquivo selecionado!!!");
+                      
                     }
                     else
                     {
-                        //preciso que a função  preencha as matrizes por ponteiro e retorne  o total_de_cidades_cadastradas para serem utilizadas no relatorio;
-                        //O erro é que as matrizes entre as funções são distintas e não estão se comunicando....
-                        //ler_arquivo_entrada(vetorArquivosSalvos[indiceVetorArquivosSalvos - 1], vetorCidades, mtzAdjacenteCidades);
+                        // preciso que a função  preencha as matrizes por ponteiro e retorne  o total_de_cidades_cadastradas para serem utilizadas no relatorio;
+                        // O erro é que as matrizes entre as funções são distintas e não estão se comunicando....
+
+                        totalCidadesCadastradas = ler_arquivo_entrada(0, vetorArquivosSalvos[indiceVetorArquivosSalvos - 1], vetorCidades, mtzAdjacenteCidades);
                         floyd_warshall();
-                       
                     }
                 }
             }
@@ -119,10 +116,6 @@ int main()
                 system("pause");
                 continue;
             }
-            /*printf("Nome do arquivo de entrada: ");
-            scanf("%s", nome_arquivo);
-            ler_arquivo_entrada(nome_arquivo);
-            floyd_warshall();*/
             break;
         case 3:
             imprimir_matriz_float(M_DISTANCIA_M);
@@ -138,6 +131,7 @@ int main()
             mostrar_caminho(origem, destino);
             break;
         case 6:
+
             relatorioCidades(totalCidadesCadastradas, vetorCidades, mtzAdjacenteCidades);
             break;
         case 7:
@@ -405,5 +399,6 @@ void relatorioCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_C
     printf("\n\n\nTotal de cidades cadastradas: %i", total_cidades_cadastradas);
     printf("\n************************************************************\n\n");
     system("pause");
-    limpar_Terminal();
+   // limpar_Terminal();
+   //Deixar visivel para acompanhar na origem e no destino 
 }
