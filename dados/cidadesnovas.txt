@@ -1,7 +1,0 @@
-3
-nova cruz
-santo antonio
-passa e dica
-0.00;15.00;15.00
-18.00;0.00;18.00
-24.00;24.00;0.00

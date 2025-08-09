@@ -1,26 +1,26 @@
 #include <stdio.h>
 #include "matriz_int.h"
 
-void imprimir_matriz_int(int M[MAX][MAX])
+void imprimir_matriz_int(int total_cidades_cadastradas, int (*mtz_predecessores_cidades)[MAX_TOTAL_CIDADES])
 {
     printf("\t");
-    for (int j = 0; j < n; j++)
+    for (int j = 0; j < total_cidades_cadastradas; j++)
     {
         printf(" |\t");
     }
     printf("\n\n");
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < total_cidades_cadastradas; i++)
     {
         printf("--\t");
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j < total_cidades_cadastradas; j++)
         {
-            if (M[i][j] == -1)
+            if (mtz_predecessores_cidades[i][j] == -1)
             {
-                printf("INF\t", M[i][j]);
+                printf("INF\t", mtz_predecessores_cidades[i][j]);
             }
             else
             {
-                printf(" %i\t", M[i][j]);
+                printf(" %i\t", mtz_predecessores_cidades[i][j]);
             }
         }
         printf("\n");

@@ -4,7 +4,7 @@
 
 int ler_arquivo_entrada(int total_cidades_cadastradas,  char nome_arquivo[MAX_LISTAR_ARQUIVOS], char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES],float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES])
 {
-    char pasta_arquivo[MAX] = CONFIG;
+    char pasta_arquivo[MAX_LISTAR_ARQUIVOS] = CONFIG;
     strcat(pasta_arquivo,nome_arquivo);
 
     FILE *arq = fopen(pasta_arquivo, "r");

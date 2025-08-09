@@ -1,15 +1,7 @@
 #ifndef FLOYD_WARSHALL_H
 #define FLOYD_WARSHALL_H
+#include "../rotas.h"
 
-#define MAX 100
-#define INF 100.0
-
-int n;
-char nomes[MAX][50];
-float M_ADJACENCIA[MAX][MAX];
-float M_DISTANCIA_M[MAX][MAX];
-int M_PRODECESSORES[MAX][MAX];
-
-void floyd_warshall();
+void floyd_warshall(int total_cidades_cadastradas,  float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES], float (*mtz_distancias_minimas)[MAX_TOTAL_CIDADES],  int (*mtz_predecessores_cidades)[MAX_TOTAL_CIDADES]);
 
 #endif

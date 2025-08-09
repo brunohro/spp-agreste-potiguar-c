@@ -2,29 +2,38 @@
 #include <string.h>
 #include "salvar_arquivo.h"
 
-void salvar_arquivo_saida(const char *nome_arquivo)
+int salvar_arquivo_saida(int total_cidades_cadastradas, char nome_arquivo[MAX_LISTAR_ARQUIVOS],float (*mtz_distancias_minimas)[MAX_TOTAL_CIDADES],  int (*mtz_predecessores_cidades)[MAX_TOTAL_CIDADES])
 {
-    FILE *arq = fopen(nome_arquivo, "w");
+    
+   char local_nome_arquivo[MAX_LISTAR_ARQUIVOS] = CONFIG_RESULTADOS;
+   strcat(local_nome_arquivo,nome_arquivo);
+
+
+    FILE *arq = fopen(local_nome_arquivo, "w");
+    
     if (!arq)
     {
         printf("Erro ao salvar o arquivo.\n");
-        return;
+        return 0;
     }
 
-    fprintf(arq, "%d\n", n);
-    for (int i = 0; i < n; i++)
+    fprintf(arq, "%d\n", total_cidades_cadastradas);
+    for (int i = 0; i < total_cidades_cadastradas; i++)
     {
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j < total_cidades_cadastradas; j++)
         {
-            fprintf(arq, "%.2f;", M_DISTANCIA_M[i][j]); // distância miníma
+            fprintf(arq, "%.2f;", mtz_distancias_minimas[i][j]); // distância miníma
         }
         fprintf(arq, "\n");
     }
-    for (int i = 0; i < n; i++)
+
+    for (int i = 0; i < total_cidades_cadastradas; i++)
     {
-        for (int j = 0; j < n; j++)
-            fprintf(arq, "%d;", M_PRODECESSORES[i][j]); // prodecessores
+        for (int j = 0; j < total_cidades_cadastradas; j++)
+            fprintf(arq, "%d;", mtz_predecessores_cidades[i][j]); // prodecessores
         fprintf(arq, "\n");
     }
     fclose(arq);
+
+    return 1;
 }
