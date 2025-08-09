@@ -1,5 +1,11 @@
-# spp-agreste-potiguar-c
-Esse projeto tem por objetivo determinar as rotas mais eficiente para cada par de municípios que determinada empresa atende, minimizando o tempo de viagem ou o custo de combustível, para aprimorar seus serviços e reduzir despesas operacionais.
+# comando para compilar TODO O PROJETO:
 
-- Esse é o trabalho final da disciplina de Programação para Computadores na Graduação;
+" gcc main.c cadastro/cadastrar_cidades_distancias.c cadastro/cadastrar_cidades.c caminho/mostrar_caminho.c floyd_warshall/floyd_warshall.c leitura/leitura.c matriz/matriz_int.c matriz/matriz_float.c salvar/salvar_arquivo.c salvar/salvar_cidades.c listar_arquivos/listar_arquivos.c relatorio/relatorio_cidades.c -o main "
+
+# WINDOWS EXCLUSIVIDADE
+    * manteve a exclusividade com o windows, com as funcionalidades system("cls") e system("pause");
+
+# atividades pendentes
+   * testar o funcionamento final do sistema e corrigi pequenos bugs
+
 
