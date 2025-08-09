@@ -47,7 +47,7 @@ int main()
         printf("| 4. Mostrar matriz de distancias Minima           |\n");
         printf("| 5. Mostrar matriz de predecessores               |\n");
         printf("| 6. Mostrar caminho entre dois municipios         |\n");
-        printf("| 7. Relatario das cidades                         |\n");
+        printf("| 7. Relatorio das cidades                         |\n");
         printf("| 8. Salvar resultados em arquivo                  |\n");
         printf("| 0. Sair do programa                              |\n");
         printf("+==================================================+\n");
