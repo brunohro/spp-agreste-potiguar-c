@@ -11,15 +11,15 @@
 #include "matriz/matriz_float.h"
 #include "caminho/mostrar_caminho.h"
 
-int cadastrarCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES]);
-int salvarCidades(char *nome_arquivo, int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES]);
+int cadastrarCidades(int total_cidades_cadastradas, char vetor_cidades[][MAX_CARACTERES_NOMES_CIDADES], float mtz_adjacente_cidades[][MAX_TOTAL_CIDADES]);
+int salvarCidades(char *nome_arquivo, int total_cidades_cadastradas, char vetor_cidades[][MAX_CARACTERES_NOMES_CIDADES], float mtz_adjacente_cidades[][MAX_TOTAL_CIDADES]);
 int carregarCidades();
 
-void relatorioCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES]);
+void relatorioCidades(int total_cidades_cadastradas, char vetor_cidades[][MAX_CARACTERES_NOMES_CIDADES]);
 int salvarCidadess_distancias(int linha, int coluna, float distancia);
-int cadastrarCidadesDistancias(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES]);
+int cadastrarCidadesDistancias(int total_cidades_cadastradas, char vetor_cidades[][MAX_CARACTERES_NOMES_CIDADES], float mtz_adjacente_cidades[][MAX_TOTAL_CIDADES]);
 
-int listarArquivos(char (*vetor_arquivos_salvos)[MAX_CARACTERES_NOMES_CIDADES * 4]);
+int listarArquivos(char vetor_arquivos_salvos[][MAX_CARACTERES_NOMES_CIDADES * 4]);
 
 void limpar_Terminal();
 
@@ -198,7 +198,7 @@ int main()
 
             break;
         case 7:
-            relatorioCidades(totalCidadesCadastradas, vetorCidades, mtzAdjacenciasCidades);
+            relatorioCidades(totalCidadesCadastradas, vetorCidades);
             break;
         case 8:
             if (totalCidadesCadastradas > 0)
@@ -232,7 +232,7 @@ void limpar_Terminal()
     system("cls");
 }
 
-int cadastrarCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES])
+int cadastrarCidades(int total_cidades_cadastradas, char vetor_cidades[][MAX_CARACTERES_NOMES_CIDADES], float mtz_adjacente_cidades[][MAX_TOTAL_CIDADES])
 {
 
     int opcao = 0, i = 0;
@@ -316,7 +316,7 @@ int cadastrarCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CA
     return total_cidades_cadastradas;
 }
 
-int cadastrarCidadesDistancias(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES])
+int cadastrarCidadesDistancias(int total_cidades_cadastradas,  char vetor_cidades[][MAX_CARACTERES_NOMES_CIDADES], float mtz_adjacente_cidades[][MAX_TOTAL_CIDADES])
 {
     int result = 1;
     float opcao = 0;
@@ -391,7 +391,7 @@ int cadastrarCidadesDistancias(int total_cidades_cadastradas, char (*vetor_cidad
     return result;
 }
 
-int salvarCidades(char *nome_arquivo, int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES])
+int salvarCidades(char *nome_arquivo, int total_cidades_cadastradas,  char vetor_cidades[][MAX_CARACTERES_NOMES_CIDADES], float mtz_adjacente_cidades[][MAX_TOTAL_CIDADES])
 {
     FILE *ptr_arquivo = NULL;
     int result = 0;
@@ -426,7 +426,7 @@ int salvarCidades(char *nome_arquivo, int total_cidades_cadastradas, char (*veto
     return result;
 }
 
-int listarArquivos(char (*vetor_arquivos_salvos)[MAX_CARACTERES_NOMES_CIDADES * 4])
+int listarArquivos(char vetor_arquivos_salvos[][MAX_CARACTERES_NOMES_CIDADES * 4])
 {
     DIR *dir;
     struct dirent *entry;
@@ -455,7 +455,7 @@ int listarArquivos(char (*vetor_arquivos_salvos)[MAX_CARACTERES_NOMES_CIDADES * 
     return i;
 }
 
-void relatorioCidades(int total_cidades_cadastradas, char (*vetor_cidades)[MAX_CARACTERES_NOMES_CIDADES], float (*mtz_adjacente_cidades)[MAX_TOTAL_CIDADES])
+void relatorioCidades(int total_cidades_cadastradas,  char vetor_cidades[][MAX_CARACTERES_NOMES_CIDADES])
 {
 
     printf("------------------------------------------------------------\n");
