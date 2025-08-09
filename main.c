@@ -6,17 +6,24 @@
 #include <dirent.h>
 
 // libs próprias
-#include "leitura/leitura.h"
-#include "salvar/salvar_arquivo.h"
-#include "salvar/salvar_cidades.h"
-#include "floyd_warshall/floyd_warshall.h"
-#include "matriz/matriz_int.h"
-#include "matriz/matriz_float.h"
-#include "caminho/mostrar_caminho.h"
-
 // cadastro
 #include "cadastro/cadastrar_cidades.h"
 #include "cadastro/cadastrar_cidades_distancias.h"
+
+// arquivos
+#include "leitura/leitura.h"
+#include "salvar/salvar_arquivo.h"
+#include "salvar/salvar_cidades.h"
+
+// algoritmo
+#include "floyd_warshall/floyd_warshall.h"
+
+// exibir
+#include "matriz/matriz_int.h"
+#include "matriz/matriz_float.h"
+#include "caminho/mostrar_caminho.h"
+#include "listar_arquivos/listar_arquivos.h"
+#include "relatorio/relatorio_cidades.h"
 
 // protótipo das funções
 int cadastrarCidades(int total_cidades_cadastradas, char vetor_cidades[][MAX_CARACTERES_NOMES_CIDADES], float mtz_adjacente_cidades[][MAX_TOTAL_CIDADES]);
@@ -243,59 +250,4 @@ int main()
 void limpar_Terminal()
 {
     system("cls");
-}
-
-int listarArquivos(char vetor_arquivos_salvos[][MAX_CARACTERES_NOMES_CIDADES * 4])
-{
-    DIR *dir;
-    struct dirent *entry;
-    char *dir_path = CONFIG;
-    int i = 0; // Define o diretório atual
-
-    dir = opendir(dir_path);
-
-    if (dir == NULL)
-    {
-        perror("Erro ao abrir o diretório");
-        return 1;
-    }
-
-    while ((entry = readdir(dir)) != NULL)
-    {
-        if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0)
-        {
-            strcpy(vetor_arquivos_salvos[i], entry->d_name);
-            i++;
-        }
-    }
-
-    closedir(dir);
-
-    return i;
-}
-
-void relatorioCidades(int total_cidades_cadastradas, char vetor_cidades[][MAX_CARACTERES_NOMES_CIDADES])
-{
-
-    printf("------------------------------------------------------------\n");
-    printf("|               >>> RELATARIO DAS CIDADES <<<              |");
-    printf("\n------------------------------------------------------------\n\n");
-    if (total_cidades_cadastradas > 0)
-    {
-
-        for (int i = 0; i < total_cidades_cadastradas; i++)
-        {
-            printf("\n%.2i: %s", i + 1, vetor_cidades[i]);
-            printf("\n............................................................");
-        }
-    }
-    else
-    {
-        printf("\n\nNao existe nenhuma cidade Cadastrada!\n");
-    }
-    printf("\n\n\nTotal de cidades cadastradas: %i", total_cidades_cadastradas);
-    printf("\n************************************************************\n\n");
-    system("pause");
-    // limpar_Terminal();
-    // Deixar visivel para acompanhar na origem e no destino
 }
