@@ -2,16 +2,15 @@
 #include <string.h>
 #include "leitura.h"
 
-int ler_arquivo_entrada(int total_cidades_cadastradas,  char nome_arquivo[], char vetor_cidades[][MAX_CARACTERES_NOMES_CIDADES],float mtz_adjacente_cidades[][MAX_TOTAL_CIDADES])
+int ler_arquivo_cidades(int total_cidades_cadastradas,  char nome_arquivo[], char vetor_cidades[][MAX_CARACTERES_NOMES_CIDADES],float mtz_adjacente_cidades[][MAX_TOTAL_CIDADES])
 {
     char pasta_arquivo[MAX_LISTAR_ARQUIVOS] = CONFIG;
     strcat(pasta_arquivo,nome_arquivo);
-
+    
     FILE *arq = fopen(pasta_arquivo, "r");
      // retorna um ponteiro para abrir um arquivo
     if (!arq)
     {
-        printf("--> Erro ao abrir o arquivo. \n");
         return 0;
     }
 
@@ -31,7 +30,7 @@ int ler_arquivo_entrada(int total_cidades_cadastradas,  char nome_arquivo[], cha
     }
 
     fclose(arq);
-    printf("\n\nAlgoritmo executado com sucesso!\n\n");
+    printf("\nArquivo carregado com sucesso!\n\n");
     
     return total_cidades_cadastradas;// caso o arquivo tenha sido lido corretamente, executará também o algoritmo de Floyd-Warshall
 }

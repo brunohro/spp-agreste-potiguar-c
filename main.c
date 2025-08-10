@@ -25,21 +25,6 @@
 #include "listar_arquivos/listar_arquivos.h"
 #include "relatorio/relatorio_cidades.h"
 
-// protótipo das funções
-int cadastrarCidades(int total_cidades_cadastradas, char vetor_cidades[][MAX_CARACTERES_NOMES_CIDADES], float mtz_adjacente_cidades[][MAX_TOTAL_CIDADES]);
-
-int salvarCidades(char *nome_arquivo, int total_cidades_cadastradas, char vetor_cidades[][MAX_CARACTERES_NOMES_CIDADES], float mtz_adjacente_cidades[][MAX_TOTAL_CIDADES]);
-
-int carregarCidades();
-
-void relatorioCidades(int total_cidades_cadastradas, char vetor_cidades[][MAX_CARACTERES_NOMES_CIDADES]);
-
-int salvarCidadess_distancias(int linha, int coluna, float distancia);
-
-int cadastrarCidadesDistancias(int total_cidades_cadastradas, char vetor_cidades[][MAX_CARACTERES_NOMES_CIDADES], float mtz_adjacente_cidades[][MAX_TOTAL_CIDADES]);
-
-int listarArquivos(char vetor_arquivos_salvos[][MAX_CARACTERES_NOMES_CIDADES * 4]);
-
 void limpar_Terminal();
 
 int main()
@@ -138,11 +123,18 @@ int main()
                     }
                     else
                     {
-                        totalCidadesCadastradas = ler_arquivo_entrada(0, vetorArquivosSalvos[indiceVetorArquivosSalvos - 1], vetorCidades, mtzAdjacenciasCidades);
-                        floyd_warshall(totalCidadesCadastradas, mtzAdjacenciasCidades, mtzDistanciasMinimas, mtzPredecessoresCidades);
-                        strcpy(mensagem, "");
-                        strcat(mensagem, ">>   Arquivo:");
-                        strcat(mensagem, vetorArquivosSalvos[indiceVetorArquivosSalvos - 1]);
+                        totalCidadesCadastradas = ler_arquivo_cidades(0, vetorArquivosSalvos[indiceVetorArquivosSalvos - 1], vetorCidades, mtzAdjacenciasCidades);
+                        if (totalCidadesCadastradas == 0)
+                        {
+                            printf("\n\n--> Erro ao abrir o arquivo. \n");
+                        }
+                        else
+                        {
+                            floyd_warshall(totalCidadesCadastradas, mtzAdjacenciasCidades, mtzDistanciasMinimas, mtzPredecessoresCidades);
+                            strcpy(mensagem, "");
+                            strcat(mensagem, ">>   Arquivo: ");
+                            strcat(mensagem, vetorArquivosSalvos[indiceVetorArquivosSalvos - 1]);
+                        }
                     }
                 }
             }
