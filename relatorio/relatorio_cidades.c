@@ -15,10 +15,11 @@ void relatorioCidades(int total_cidades_cadastradas, char vetor_cidades[][MAX_CA
     printf("\n------------------------------------------------------------\n\n");
     if (total_cidades_cadastradas > 0)
     {
-
+        printf("\nID: Lista das Cidades");
+        printf("\n------------------------------------------------------------");
         for (int i = 0; i < total_cidades_cadastradas; i++)
         {
-            printf("\n%.2i: %s", i + 1, vetor_cidades[i]);
+            printf("\n%.2i: %s", i, vetor_cidades[i]);
             printf("\n............................................................");
         }
     }
