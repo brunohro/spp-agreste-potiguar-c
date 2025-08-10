@@ -1,7 +1,7 @@
 #ifndef ROTAS_H
 #define ROTAS_H
 
-#define INF 100.0
+#define INF 999.9
 #define MAX 100
 
 #define MAX_TOTAL_CIDADES 100
@@ -10,6 +10,5 @@
 #define TRUE 1
 #define CONFIG "./dados/"
 #define CONFIG_RESULTADOS "./dados_resultados/"
-
 
 #endif
