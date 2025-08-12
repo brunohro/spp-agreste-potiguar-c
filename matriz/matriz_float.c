@@ -6,19 +6,19 @@ void imprimir_matriz_float(int total_cidades_cadastradas, float mtz_adjacente_di
     printf("\t");
      for (int i = 0; i < total_cidades_cadastradas; i++)
     {
-        printf(" %.3i\t",i);
+        printf(" %.3i\t",i); // valor de i nas colunas
        
     }
     printf("\n\t");
     for (int i = 0; i < total_cidades_cadastradas; i++)
     {
-        printf("  |\t");
+        printf("  |\t"); // organizando coluna
     }
     printf("\n\n");
 
     for (int i = 0; i < total_cidades_cadastradas; i++)
     {
-        printf("%.3i --\t",i);
+        printf("%.3i --\t",i); // aplicando no inicio da linha
         for (int j = 0; j < total_cidades_cadastradas; j++)
         {
             if (mtz_adjacente_distancia[i][j] == INF)
