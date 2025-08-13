@@ -2,15 +2,14 @@
 #include <string.h>
 #include "salvar_arquivo.h"
 
-int salvar_arquivo_saida(int total_cidades_cadastradas, char nome_arquivo[MAX_LISTAR_ARQUIVOS],float mtz_distancias_minimas[][MAX_TOTAL_CIDADES],  int mtz_predecessores_cidades[][MAX_TOTAL_CIDADES])
+int salvar_arquivo_saida(int total_cidades_cadastradas, char nome_arquivo[MAX_LISTAR_ARQUIVOS], float mtz_distancias_minimas[][MAX_TOTAL_CIDADES], int mtz_predecessores_cidades[][MAX_TOTAL_CIDADES])
 {
-    
-   char local_nome_arquivo[MAX_LISTAR_ARQUIVOS] = CONFIG_RESULTADOS;
-   strcat(local_nome_arquivo,nome_arquivo);
 
+    char local_nome_arquivo[MAX_LISTAR_ARQUIVOS] = CONFIG_RESULTADOS; // recebendo local
+    strcat(local_nome_arquivo, nome_arquivo);                         // // junta nome da pasta + nome do arquivo
 
-    FILE *arq = fopen(local_nome_arquivo, "w");
-    
+    FILE *arq = fopen(local_nome_arquivo, "w"); // escrita 
+
     if (!arq)
     {
         printf("Erro ao salvar o arquivo.\n");

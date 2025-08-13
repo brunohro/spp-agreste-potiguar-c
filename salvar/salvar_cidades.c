@@ -11,22 +11,29 @@ int salvarCidades(char *nome_arquivo, int total_cidades_cadastradas, char vetor_
 {
     FILE *ptr_arquivo = NULL;
     int result = 0;
-    char arquivo[100] = CONFIG;
+    char arquivo[100] = CONFIG; // pega o caminho
 
+<<<<<<< HEAD
     strcat(arquivo, nome_arquivo);
     strcat(arquivo, ".csv");
+=======
+    strcat(arquivo, nome_arquivo); // junta nome + caminho
+    strcat(arquivo, ".txt");       // definindo tipo txt
+>>>>>>> 2b0ca7da952b4c551722e0874f5a4768f17dcb3f
 
-    ptr_arquivo = fopen(arquivo, "w");
+    ptr_arquivo = fopen(arquivo, "w"); // modo escrita
 
     if (ptr_arquivo != NULL)
     {
         system("cls");
         printf("\nsalvando...\n\n");
         fprintf(ptr_arquivo, "%i\n", total_cidades_cadastradas);
+
         for (int i = 0; i < total_cidades_cadastradas; i++)
         {
             fprintf(ptr_arquivo, "%s\n", vetor_cidades[i]);
         }
+
         for (int l = 0; l < total_cidades_cadastradas; l++)
         {
             for (int c = 0; c < total_cidades_cadastradas; c++)

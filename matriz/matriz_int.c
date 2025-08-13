@@ -6,18 +6,18 @@ void imprimir_matriz_int(int total_cidades_cadastradas, int mtz_predecessores_ci
     printf("\t");
     for (int i = 0; i < total_cidades_cadastradas; i++)
     {
-        printf(" %.2i\t",i);
+        printf(" %.2i\t",i); // aplicando acima da coluna
        
     }
    printf("\n\t");
     for (int j = 0; j < total_cidades_cadastradas; j++)
     {
-        printf(" |\t");
+        printf(" |\t"); // aplicando acima da coluna
     }
     printf("\n\n");
     for (int i = 0; i < total_cidades_cadastradas; i++)
     {
-        printf("%.2i --\t",i);
+        printf("%.2i --\t",i); // incio da linha
         for (int j = 0; j < total_cidades_cadastradas; j++)
         {
             if (mtz_predecessores_cidades[i][j] == -1)
