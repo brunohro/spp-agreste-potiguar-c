@@ -90,8 +90,7 @@ int main()
                 totalCidadesCadastradas = tempTotalCidadesCadastradas;
                 indiceVetorArquivosSalvos = 0;
                 floyd_warshall(totalCidadesCadastradas, mtzAdjacenciasCidades, mtzDistanciasMinimas, mtzPredecessoresCidades);
-                strcpy(mensagem, "");
-                strcat(mensagem, ">>   usuario ");
+                strcpy(mensagem, ">>   usuario ");
             }
             break;
         case 2:

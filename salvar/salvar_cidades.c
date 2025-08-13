@@ -14,7 +14,7 @@ int salvarCidades(char *nome_arquivo, int total_cidades_cadastradas, char vetor_
     char arquivo[100] = CONFIG;
 
     strcat(arquivo, nome_arquivo);
-    strcat(arquivo, ".txt");
+    strcat(arquivo, ".csv");
 
     ptr_arquivo = fopen(arquivo, "w");
 

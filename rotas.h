@@ -1,7 +1,7 @@
 #ifndef ROTAS_H
 #define ROTAS_H
 
-#define INF 999.9
+#define INF 999.9f
 #define MAX 100
 
 #define MAX_TOTAL_CIDADES 100
